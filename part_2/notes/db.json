@@ -4,7 +4,7 @@
       "id": 1,
       "content": "HTML is easy",
       "date": "2019-05-30T17:30:31.098Z",
-      "important": false
+      "important": true
     },
     {
       "id": 2,
@@ -53,6 +53,12 @@
       "date": "2021-03-29T19:15:25.050Z",
       "important": false,
       "id": 9
+    },
+    {
+      "content": "a new Note ...",
+      "date": "2021-03-30T03:38:31.630Z",
+      "important": false,
+      "id": 10
     }
   ]
 }

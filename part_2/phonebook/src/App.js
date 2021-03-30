@@ -4,6 +4,7 @@ import Display from "./components/Display";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import phonebookService from "./services/phonebook";
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,6 +12,8 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
+  const [statusMsg, setStatusMsg] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null)
 
   useEffect(() => {
     phonebookService.getAll().then((returnedPersons) => {
@@ -39,11 +42,17 @@ const App = () => {
         phonebookService
           .update(id, changedPerson)
           .then((response) => {
+            setStatusMsg(`Updated ${newName}`)
+            setTimeout(() => {
+              setStatusMsg(null)
+            }, 5000);
             setPersons(
               persons.map((person) => (person.id !== id ? person : response))
             );
           })
-          .catch("Error");
+          .catch(error => {
+            setErrorMsg(`Information of ${newName} has already been removed from the server`)
+          });
       }
     } else {
       phonebookService.create(newNameObject).then((returnedPerson) => {
@@ -51,6 +60,11 @@ const App = () => {
         setPersons(copy.concat(returnedPerson));
         setNewName("");
         setNewNumber("");
+        setStatusMsg(`Added ${newName}`)
+            setTimeout(() => {
+              setStatusMsg(null)
+            }, 5000);
+        
       });
     }
   };
@@ -75,13 +89,18 @@ const App = () => {
       phonebookService.deleteContact(id).then((response) => {
         const modifiedPhonebook = persons.filter((person) => person.id !== id);
         setPersons(modifiedPhonebook);
-      });
+      })
+      .catch(error => {
+        setStatusMsg(`Information of ${name} has already been removed from server`)
+        setNewNumber("")
+      })
     }
   };
 
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={statusMsg} errorMsg ={errorMsg}/>
       <Filter name={newFilter} onChange={setFilterText}></Filter>
       <PersonForm
         updateNewName={updateNewName}
