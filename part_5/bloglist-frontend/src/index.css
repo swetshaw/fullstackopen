@@ -1,0 +1,13 @@
+.greenMsg{
+    color: darkgreen;
+    border: 2px solid darkgreen;
+    background-color: gainsboro;
+    border-radius: 2px;
+}
+
+.errorMsg{
+    color: darkred;
+    border: 10px solid darkred;
+    background-color: gainsboro;
+    
+}
