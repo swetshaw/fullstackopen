@@ -1,3 +1,5 @@
+const User = require('../models/user');
+
 const logger = require('./logger');
 
 const requestLogger = (request, response, next) => {
@@ -36,15 +38,23 @@ const tokenExtractor = (request, res, next) => {
   const authorization = request.get('authorization');
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     request.token = authorization.substring(7);
-    return next()
+    return next();
   }
-  request.token = null
+  request.token = null;
   return next();
 };
+
+// const userExtractor = async (request, response, next) => {
+//   const userId = request.body.user;
+//   const user = await User.findById(userId);
+//   request.user = user;
+//   return next();
+// };
 
 module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
   tokenExtractor,
+  // userExtractor,
 };
